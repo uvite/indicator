@@ -1,114 +1,70 @@
-package indicator
+package tart
 
-import (
-	"github.com/c9s/bbgo/pkg/datatype/floats"
-	"github.com/c9s/bbgo/pkg/indicator"
-	"github.com/c9s/bbgo/pkg/types"
-)
-
-// Refer: Arnaud Legoux Moving Average
-// Refer: https://capital.com/arnaud-legoux-moving-average
-// Also check https://github.com/DaveSkender/Stock.Indicators/blob/main/src/a-d/Alma/Alma.cs
-// @param offset: Gaussian applied to the combo line. 1->ema, 0->sma
-// @param sigma: the standard deviation applied to the combo line. This makes the combo line sharper
-//
-//  hullma = ta.wma(2*ta.wma(src, length/2)-ta.wma(src, length), math.floor(math.sqrt(length)))
-//
-//wma 实现
-//norm = 0.0
-//sum = 0.0
-//for i = 0 to y - 1
-//	weight = (y - i) * y
-//	norm := norm + weight
-//	sum := sum + x[i] * weight
-//	sum / norm
-
-//go:generate callbackgen -type ALMA
-type WMA struct {
-	types.SeriesBase
-	types.IntervalWindow         // required
-	Offset               float64 // required: recommend to be 0.5
-	Sigma                float64 // required: recommend to be 5
-
-	weight          []float64
-	sum             float64
-	input           []float64
-	Values          floats.Slice
-	UpdateCallbacks []func(value float64)
+// A Weighted Moving Average puts more weight on recent data and less on past
+// data. This is done by multiplying each bar’s price by a weighting factor.
+// Because of its unique calculation, WMA will follow prices more closely
+// than a corresponding Simple Moving Average.
+//  https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/wma
+type Wma struct {
+	n    int64
+	d    float64
+	hist *CBuf
+	sum  float64
+	wsum float64
 }
 
-const MaxNumOfWMA = 5_000
-const MaxNumOfWMATruncateSize = 300
-
-func (inc *WMA) Update(value float64) {
-	if inc.weight == nil {
-		inc.SeriesBase.Series = inc
-		inc.weight = make([]float64, inc.Window)
-		//m := inc.Offset * (float64(inc.Window) - 1.)
-		//s := float64(inc.Window) / float64(inc.Sigma)
-		inc.sum = 0.
-		for i := 0; i < inc.Window; i++ {
-			//diff := float64(i) - m
-			//wt := math.Exp(-diff * diff / 2. / s / s)
-			wt := float64(inc.Window-i) * float64(inc.Window)
-			//norm := norm + weight
-			inc.sum += wt
-			inc.weight[i] = wt
-		}
-	}
-	inc.input = append(inc.input, value)
-	if len(inc.input) >= inc.Window {
-		weightedSum := 0.0
-		inc.input = inc.input[len(inc.input)-inc.Window:]
-		for i := 0; i < inc.Window; i++ {
-			weightedSum += inc.weight[inc.Window-i-1] * inc.input[i]
-		}
-		inc.Values.Push(weightedSum / inc.sum)
-		if len(inc.Values) > MaxNumOfWMA {
-			inc.Values = inc.Values[MaxNumOfWMATruncateSize-1:]
-		}
+func NewWma(n int64) *Wma {
+	return &Wma{
+		n:    n,
+		d:    float64(n*(n+1)) / 2,
+		hist: NewCBuf(n),
+		sum:  0,
+		wsum: 0,
 	}
 }
 
-func (inc *WMA) Last() float64 {
-	if len(inc.Values) == 0 {
+func (w *Wma) Update(v float64) float64 {
+	if w.n == 1 {
+		return v
+	}
+
+	old := w.hist.Append(v)
+	w.sum += v - old
+
+	sz := w.hist.Size()
+	if sz < w.n {
+		w.wsum += v * float64(sz)
 		return 0
+	} else {
+		w.wsum += v * float64(w.n)
 	}
-	return inc.Values[len(inc.Values)-1]
+
+	ret := w.wsum / w.d
+	w.wsum -= w.sum
+
+	return ret
 }
 
-func (inc *WMA) Index(i int) float64 {
-	if i >= len(inc.Values) {
-		return 0
+func (w *Wma) InitPeriod() int64 {
+	return w.n - 1
+}
+
+func (w *Wma) Valid() bool {
+	return w.hist.Size() > w.InitPeriod()
+}
+
+// A Weighted Moving Average puts more weight on recent data and less on past
+// data. This is done by multiplying each bar’s price by a weighting factor.
+// Because of its unique calculation, WMA will follow prices more closely
+// than a corresponding Simple Moving Average.
+//  https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/wma
+func WmaArr(in []float64, n int64) []float64 {
+	out := make([]float64, len(in))
+
+	w := NewWma(n)
+	for i, v := range in {
+		out[i] = w.Update(v)
 	}
-	return inc.Values[len(inc.Values)-i-1]
-}
 
-func (inc *WMA) Length() int {
-	return len(inc.Values)
-}
-
-var _ types.SeriesExtend = &WMA{}
-
-func (inc *WMA) CalculateAndUpdate(allKLines []types.KLine) {
-	if inc.input == nil {
-		for _, k := range allKLines {
-			inc.Update(k.Close.Float64())
-			inc.EmitUpdate(inc.Last())
-		}
-		return
-	}
-	inc.Update(allKLines[len(allKLines)-1].Close.Float64())
-	inc.EmitUpdate(inc.Last())
-}
-
-func (inc *WMA) handleKLineWindowUpdate(interval types.Interval, window types.KLineWindow) {
-	if inc.Interval != interval {
-		return
-	}
-	inc.CalculateAndUpdate(window)
-}
-
-func (inc *WMA) Bind(updater indicator.KLineWindowUpdater) {
-	updater.OnKLineWindowUpdate(inc.handleKLineWindowUpdate)
+	return out
 }

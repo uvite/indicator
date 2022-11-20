@@ -1,199 +1,89 @@
-package indicator
+package tart
 
-import (
-	"fmt"
-	"github.com/c9s/bbgo/pkg/datatype/floats"
-	"github.com/c9s/bbgo/pkg/fixedpoint"
-	"github.com/c9s/bbgo/pkg/types"
-	"math"
-	"time"
-)
-
-const MaxNumOfEWMA = 5_000
-const MaxNumOfEWMATruncateSize = 100
-
-var three = fixedpoint.NewFromInt(3)
-
-var zeroTime = time.Time{}
-
-// Refer: Commodity Channel Index
-// Refer URL: http://www.andrewshamlet.net/2017/07/08/python-tutorial-cci
-// with modification of ddof=0 to let standard deviation to be divided by N instead of N-1
-//
-//go:generate callbackgen -type CCI
-type CCI struct {
-	types.SeriesBase
-	types.IntervalWindow
-	Input        floats.Slice
-	TypicalPrice floats.Slice
-	MA           floats.Slice
-	Values       floats.Slice
-	EndTime      time.Time
-
-	UpdateCallbacks []func(value float64)
-	Sqrt            bool
+// Developed by Donald Lambert and featured in Commodities
+// magazine in 1980, the Commodity Channel Index (CCI) is
+// a versatile indicator that can be used to identify a new
+// trend or warn of extreme conditions. Lambert originally
+// developed CCI to identify cyclical turns in commodities,
+// but the indicator can be successfully applied to indices,
+// ETFs, stocks and other securities. In general, CCI measures
+// the current price level relative to an average price level
+// over a given period of time. CCI is relatively high when
+// prices are far above their average, but is relatively low
+// when prices are far below their average. In this manner,
+// CCI can be used to identify overbought and oversold levels.
+//  https://school.stockcharts.com/doku.php?id=technical_indicators:commodity_channel_index_cci
+//  https://www.investopedia.com/terms/c/commoditychannelindex.asp
+//  https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/cci
+type Cci struct {
+	n          int64
+	initPeriod int64
+	avg        *Sma
+	dev        *Dev
+	sz         int64
 }
 
-func (inc *CCI) Update(value float64) {
-	if len(inc.TypicalPrice) == 0 {
-		inc.SeriesBase.Series = inc
-		inc.TypicalPrice.Push(value)
-		inc.Input.Push(value)
-		return
-	} else if len(inc.TypicalPrice) > MaxNumOfEWMA {
-		inc.TypicalPrice = inc.TypicalPrice[MaxNumOfEWMATruncateSize-1:]
-		inc.Input = inc.Input[MaxNumOfEWMATruncateSize-1:]
+func NewCci(n int64) *Cci {
+	avg := NewSma(n)
+	dev := NewDev(n)
+	a := avg.InitPeriod()
+	b := dev.InitPeriod()
+	if a < b {
+		a = b
 	}
-
-	inc.Input.Push(value)
-	tp := inc.TypicalPrice.Last() - inc.Input.Index(inc.Window) + value
-	inc.TypicalPrice.Push(tp)
-	if len(inc.Input) < inc.Window {
-		return
-	}
-	ma := tp / float64(inc.Window)
-	inc.MA.Push(ma)
-	if len(inc.MA) > MaxNumOfEWMA {
-		inc.MA = inc.MA[MaxNumOfEWMATruncateSize-1:]
-	}
-	md := 0.
-
-	if inc.Sqrt {
-		for i := 0; i < inc.Window; i++ {
-			diff := inc.Input.Index(i) - ma
-			md += diff * diff
-		}
-		md = math.Sqrt(md / float64(inc.Window))
-		fmt.Println("sqrt")
-	} else {
-		for i := 0; i < inc.Window; i++ {
-			diff := inc.Input.Index(i) - ma
-			md += math.Abs(diff)
-		}
-		md = (md / float64(inc.Window))
-		//fmt.Println("simple")
-
-	}
-
-	cci := (value - ma) / (0.015 * md)
-
-	inc.Values.Push(cci)
-	if len(inc.Values) > MaxNumOfEWMA {
-		inc.Values = inc.Values[MaxNumOfEWMATruncateSize-1:]
+	return &Cci{
+		n:          n,
+		initPeriod: a,
+		avg:        avg,
+		dev:        dev,
+		sz:         0,
 	}
 }
 
-func (inc *CCI) Update1(value float64) {
-	if len(inc.TypicalPrice) == 0 {
-		inc.SeriesBase.Series = inc
-		inc.TypicalPrice.Push(value)
-		inc.Input.Push(value)
-		return
-	} else if len(inc.TypicalPrice) > MaxNumOfEWMA {
-		inc.TypicalPrice = inc.TypicalPrice[MaxNumOfEWMATruncateSize-1:]
-		inc.Input = inc.Input[MaxNumOfEWMATruncateSize-1:]
-	}
+func (d *Cci) Update(h, l, c float64) float64 {
+	d.sz++
 
-	inc.Input.Push(value)
-	tp := inc.TypicalPrice.Last() - inc.Input.Index(inc.Window) + value
-	inc.TypicalPrice.Push(tp)
-	if len(inc.Input) < inc.Window {
-		return
-	}
-	ma := tp / float64(inc.Window)
-	inc.MA.Push(ma)
-	if len(inc.MA) > MaxNumOfEWMA {
-		inc.MA = inc.MA[MaxNumOfEWMATruncateSize-1:]
-	}
-	md := 0.
-	//for i := 0; i < inc.Window; i++ {
-	//	diff := inc.Input.Index(i) - ma
-	//	md += diff * diff
-	//}
-	//md = math.Sqrt(md / float64(inc.Window))
+	m := (h + l + c) / 3.0
+	avg := d.avg.Update(m)
+	dev := d.dev.Update(m)
 
-	for i := 0; i < inc.Window; i++ {
-		diff := inc.Input.Index(i) - ma
-		md += math.Abs(diff)
-	}
-	md = (md / float64(inc.Window))
-
-	cci := (value - ma) / (0.015 * md)
-	//fmt.Printf("%.4f,%.4f,%.4f,%.4f,%.4f,%.4f \n", value, ma, md, 0.015, 0.015*md, cci)
-
-	inc.Values.Push(cci)
-	if len(inc.Values) > MaxNumOfEWMA {
-		inc.Values = inc.Values[MaxNumOfEWMATruncateSize-1:]
-	}
-}
-
-func (inc *CCI) Last() float64 {
-	if len(inc.Values) == 0 {
+	if almostZero(dev) {
 		return 0
 	}
-	return inc.Values[len(inc.Values)-1]
+
+	return (m - avg) / (0.015 * dev)
 }
 
-func (inc *CCI) Index(i int) float64 {
-	if i >= len(inc.Values) {
-		return 0
-	}
-	return inc.Values[len(inc.Values)-1-i]
+func (d *Cci) InitPeriod() int64 {
+	return d.initPeriod
 }
 
-func (inc *CCI) Length() int {
-	return len(inc.Values)
+func (d *Cci) Valid() bool {
+	return d.sz > d.initPeriod
 }
 
-var _ types.SeriesExtend = &CCI{}
+// Developed by Donald Lambert and featured in Commodities
+// magazine in 1980, the Commodity Channel Index (CCI) is
+// a versatile indicator that can be used to identify a new
+// trend or warn of extreme conditions. Lambert originally
+// developed CCI to identify cyclical turns in commodities,
+// but the indicator can be successfully applied to indices,
+// ETFs, stocks and other securities. In general, CCI measures
+// the current price level relative to an average price level
+// over a given period of time. CCI is relatively high when
+// prices are far above their average, but is relatively low
+// when prices are far below their average. In this manner,
+// CCI can be used to identify overbought and oversold levels.
+//  https://school.stockcharts.com/doku.php?id=technical_indicators:commodity_channel_index_cci
+//  https://www.investopedia.com/terms/c/commoditychannelindex.asp
+//  https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/cci
+func CciArr(h, l, c []float64, n int64) []float64 {
+	out := make([]float64, len(h))
 
-func (inc *CCI) PushK(k types.KLine) {
-
-	//fmt.Println((k.High+k.Low+k.Close)/3.0, k.High.Add(k.Low).Add(k.Close).Div(three).Float64())
-	inc.Update(k.High.Add(k.Low).Add(k.Close).Div(three).Float64())
-}
-
-func (inc *CCI) RePushK(k types.KLine) {
-	//fmt.Println("len:", inc.Last(), inc.Index(1), inc.Index(2), inc.Length())
-	//fmt.Println("\n kline:", k.Open, k.High, k.Low, k.Close, k.EndTime)
-
-	if !k.Closed {
-		inc.Input.Pop(int64(inc.Input.Length() - 1))
-		inc.Values.Pop(int64(inc.Values.Length() - 1))
-		inc.MA.Pop(int64(inc.MA.Length() - 1))
-		inc.TypicalPrice.Pop(int64(inc.TypicalPrice.Length() - 1))
-
-		//inc.Values[len(inc.Values)-1]
-		//spew.Dump(inc.Values)
-		inc.Update(k.High.Add(k.Low).Add(k.Close).Div(three).Float64())
-		//fmt.Println("-2,-1,0,len:", inc.MA.Index(len(inc.Values)-3), inc.MA.Index(len(inc.Values)-2), inc.MA.Last(), inc.MA.Length())
-
-		return
-	} else {
-		inc.Update(k.High.Add(k.Low).Add(k.Close).Div(three).Float64())
-
-		inc.EndTime = k.EndTime.Time()
+	d := NewCci(n)
+	for i := 0; i < len(h); i++ {
+		out[i] = d.Update(h[i], l[i], c[i])
 	}
 
-}
-
-func (inc *CCI) CalculateAndUpdate(allKLines []types.KLine) {
-	if inc.TypicalPrice.Length() == 0 {
-		for _, k := range allKLines {
-			inc.PushK(k)
-
-		}
-	} else {
-		k := allKLines[len(allKLines)-1]
-		inc.PushK(k)
-
-	}
-}
-
-func (inc *CCI) handleKLineWindowUpdate(interval types.Interval, window types.KLineWindow) {
-	if inc.Interval != interval {
-		return
-	}
-
-	inc.CalculateAndUpdate(window)
+	return out
 }

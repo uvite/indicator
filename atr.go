@@ -1,125 +1,90 @@
-package indicator
+package tart
 
-import (
-	"math"
-	"time"
-
-	"github.com/c9s/bbgo/pkg/datatype/floats"
-	"github.com/c9s/bbgo/pkg/types"
-)
-
-//go:generate callbackgen -type ATR
-type ATR struct {
-	types.SeriesBase
-	types.IntervalWindow
-	PercentageVolatility floats.Slice
-
-	PreviousClose float64
-	RMA           *RMA
-
-	EndTime         time.Time
-	UpdateCallbacks []func(value float64)
+// Developed by J. Welles Wilder, the Average True Range (ATR)
+// is an indicator that measures volatility. As with most of
+// his indicators, Wilder designed ATR with commodities and
+// daily prices in mind. Commodities are frequently more volatile
+// than stocks. They were are often subject to gaps and limit moves,
+// which occur when a commodity opens up or down its maximum
+// allowed move for the session. A volatility formula based only
+// on the high-low range would fail to capture volatility from
+// gap or limit moves. Wilder created Average True Range to
+// capture this “missing” volatility. It is important to remember
+// that ATR does not provide an indication of price direction,
+// just volatility.
+//
+// Wilder features ATR in his 1978 book, New Concepts in Technical
+// Trading Systems. This book also includes the Parabolic SAR,
+// RSI and the Directional Movement Concept (ADX). Despite being
+// developed before the computer age, Wilder's indicators have
+// stood the test of time and remain extremely popular.
+//  https://school.stockcharts.com/doku.php?id=technical_indicators:average_true_range_atr
+//  https://www.investopedia.com/terms/a/atr.asp
+//  https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/atr
+type Atr struct {
+	n   int64
+	tr  *TRange
+	ema *Ema
+	sz  int64
 }
 
-var _ types.SeriesExtend = &ATR{}
-
-func (inc *ATR) Clone() *ATR {
-	out := &ATR{
-		IntervalWindow:       inc.IntervalWindow,
-		PercentageVolatility: inc.PercentageVolatility[:],
-		PreviousClose:        inc.PreviousClose,
-		RMA:                  inc.RMA.Clone().(*RMA),
-		EndTime:              inc.EndTime,
+func NewAtr(n int64) *Atr {
+	return &Atr{
+		n:   n,
+		tr:  NewTRange(),
+		ema: NewEma(n, 1.0/float64(n)),
+		sz:  0,
 	}
-	out.SeriesBase.Series = out
+}
+
+func (a *Atr) Update(h, l, c float64) float64 {
+	a.sz++
+
+	tr := a.tr.Update(h, l, c)
+
+	if a.sz == 1 {
+		return 0
+	}
+
+	return a.ema.Update(tr)
+}
+
+func (a *Atr) InitPeriod() int64 {
+	return 1
+}
+
+func (a *Atr) Valid() bool {
+	return a.sz > 1
+}
+
+// Developed by J. Welles Wilder, the Average True Range (ATR)
+// is an indicator that measures volatility. As with most of
+// his indicators, Wilder designed ATR with commodities and
+// daily prices in mind. Commodities are frequently more volatile
+// than stocks. They were are often subject to gaps and limit moves,
+// which occur when a commodity opens up or down its maximum
+// allowed move for the session. A volatility formula based only
+// on the high-low range would fail to capture volatility from
+// gap or limit moves. Wilder created Average True Range to
+// capture this “missing” volatility. It is important to remember
+// that ATR does not provide an indication of price direction,
+// just volatility.
+//
+// Wilder features ATR in his 1978 book, New Concepts in Technical
+// Trading Systems. This book also includes the Parabolic SAR,
+// RSI and the Directional Movement Concept (ADX). Despite being
+// developed before the computer age, Wilder's indicators have
+// stood the test of time and remain extremely popular.
+//  https://school.stockcharts.com/doku.php?id=technical_indicators:average_true_range_atr
+//  https://www.investopedia.com/terms/a/atr.asp
+//  https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/atr
+func AtrArr(h, l, c []float64, n int64) []float64 {
+	out := make([]float64, len(c))
+
+	a := NewAtr(n)
+	for i := 0; i < len(c); i++ {
+		out[i] = a.Update(h[i], l[i], c[i])
+	}
+
 	return out
-}
-
-func (inc *ATR) TestUpdate(high, low, cloze float64) *ATR {
-	c := inc.Clone()
-	c.Update(high, low, cloze)
-	return c
-}
-
-func (inc *ATR) Update(high, low, cloze float64) {
-	if inc.Window <= 0 {
-		panic("window must be greater than 0")
-	}
-
-	if inc.RMA == nil {
-		inc.SeriesBase.Series = inc
-		inc.RMA = &RMA{
-			IntervalWindow: types.IntervalWindow{Window: inc.Window},
-			Adjust:         true,
-		}
-		inc.PreviousClose = cloze
-		return
-	}
-
-	// calculate true range
-	trueRange := high - low
-	hc := math.Abs(high - inc.PreviousClose)
-	lc := math.Abs(low - inc.PreviousClose)
-	if trueRange < hc {
-		trueRange = hc
-	}
-	if trueRange < lc {
-		trueRange = lc
-	}
-
-	inc.PreviousClose = cloze
-
-	// apply rolling moving average
-	inc.RMA.Update(trueRange)
-	atr := inc.RMA.Last()
-	inc.PercentageVolatility.Push(atr / cloze)
-}
-
-func (inc *ATR) Last() float64 {
-	if inc.RMA == nil {
-		return 0
-	}
-	return inc.RMA.Last()
-}
-
-func (inc *ATR) Index(i int) float64 {
-	if inc.RMA == nil {
-		return 0
-	}
-	return inc.RMA.Index(i)
-}
-
-func (inc *ATR) Length() int {
-	if inc.RMA == nil {
-		return 0
-	}
-
-	return inc.RMA.Length()
-}
-
-func (inc *ATR) PushK(k types.KLine) {
-	if inc.EndTime != zeroTime && !k.EndTime.After(inc.EndTime) {
-		return
-	}
-
-	inc.Update(k.High.Float64(), k.Low.Float64(), k.Close.Float64())
-	inc.EndTime = k.EndTime.Time()
-	inc.EmitUpdate(inc.Last())
-}
-
-func (inc *ATR) RePushK(k types.KLine) {
-	if k.Closed {
-
-		inc.RMA.Values.Pop(int64(inc.RMA.Values.Length() - 1))
-		inc.PercentageVolatility.Pop(int64(inc.PercentageVolatility.Length() - 1))
-		inc.Update(k.High.Float64(), k.Low.Float64(), k.Close.Float64())
-		inc.EndTime = k.EndTime.Time()
-		inc.EmitUpdate(inc.Last())
-		return
-	} else {
-		inc.Update(k.High.Float64(), k.Low.Float64(), k.Close.Float64())
-		inc.EndTime = k.EndTime.Time()
-		inc.EmitUpdate(inc.Last())
-	}
-
 }
