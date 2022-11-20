@@ -1,6 +1,6 @@
 package tart
 
-import "github.com/iamjinlei/go-tart/floats"
+import "github.com/uvite/indicator/floats"
 
 type Ta struct {
 }

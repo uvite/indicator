@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/iamjinlei/go-tart"
-	"github.com/iamjinlei/go-tart/floats"
+	"github.com/uvite/indicator/floats"
+
+	"github.com/uvite/indicator"
 )
 
 var (
