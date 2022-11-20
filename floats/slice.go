@@ -8,7 +8,7 @@ import (
 
 type Slice []float64
 
-func New(a ...float64) Slice {
+func NewSlice(a ...float64) Slice {
 	return Slice(a)
 }
 
@@ -148,4 +148,3 @@ func (s *Slice) Length() int {
 func (s Slice) Addr() *Slice {
 	return &s
 }
-

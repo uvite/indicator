@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/markcheno/go-talib v0.0.0-20190307022042-cd53a9264d70
 	github.com/stretchr/testify v1.8.1
+	golang.org/x/exp v0.0.0-20221114191408-850992195362
 	gonum.org/v1/gonum v0.12.0
 )
 
