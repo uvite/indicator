@@ -5,16 +5,223 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cfd12f6-b355-4e04-9591-64aae1c38bf6" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/change/clonable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/change/slice.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/change/slice_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/series.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/const.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/convert.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/count.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/dec.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/dec_dnum_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/dec_legacy_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/dec_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/div128.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/filter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/helpers.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/reduce.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/reduce_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/slice.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fixedpoint/slice_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hma.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sigchan/sigchan.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style/colors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style/pnl.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style/table.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/account.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/asset.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/balance.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/bollinger.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/bookticker.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/channel.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/csv.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/currencies.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/deposit.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/error.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/exchange.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/exchange_icon.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/filter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/float_map.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/fundingrate.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/heikinashi_stream.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/indicator.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/indicator_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/instance.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/interval.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/interval_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/json.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/kline.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/kline_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/margin.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/market.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/market_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/omega.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/omega_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/order.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/orderbook.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/orderbook_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/ordermap.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/pca.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/plaintext.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/position.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/position_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/premiumindex.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/price_volume_heartbeat.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/price_volume_heartbeat_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/price_volume_slice.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/price_volume_slice_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/profit.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/rbtorderbook.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/rbtorderbook_callbacks.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/rbtorderbook_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/rbtree.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/rbtree_node.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/rbtree_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/reward.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/seriesbase_imp.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/sharpe.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/sharpe_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/side.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/sliceorderbook.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/sliceorderbook_callbacks.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/sort.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/sort_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/sortino.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/sortino_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/standardstream_callbacks.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/strategy_status.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/stream.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/streamorderbook_callbacks.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/ticker.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/time.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/time_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/trade.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/trade_stats.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/trade_stats_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/trade_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/value_map.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/value_map_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/withdraw.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/dir.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/envvars.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/fnv.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/http_response.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/http_response_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/json.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/math.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/math_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/paper_trade.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/pointer.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/pointer_18.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/profile.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/rate_limit.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/rate_limit_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/render.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/reonce.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/reonce_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/retry.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/retry_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/simple_args.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/string.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/string_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/templateutil/render.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/time.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/trylock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/trylock_18.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/volatile_memory.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ad.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ad_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adosc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adosc_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adx.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adx_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adxr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adxr_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apo.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apo_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/aroon.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/aroon_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/aroonosc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/aroonosc_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/atr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/atr_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bbands.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bbands_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bench_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bop.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bop_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbuf.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbuf_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cci.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cci_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmo.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmo_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dema.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dema_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/diff.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/diff_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dx.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dx_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ema.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ema_test.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/example/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/example/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/floats/slice.go" beforeDir="false" afterPath="$PROJECT_DIR$/floats/slice.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/help_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kama.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kama_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ma.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ma_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/macd.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/macd_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/macdext.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/macdext_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/max.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/max_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mfi.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mfi_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/min.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/min_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/natr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/natr_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obv.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obv_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppo.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppo_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/roc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/roc_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsi.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsi_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sma.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sma_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stddev.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stddev_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stochfast.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stochfast_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stochk.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stochrsi.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stochrsi_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stochslow.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stochslow_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sum.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sum_test.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ta.go" beforeDir="false" afterPath="$PROJECT_DIR$/ta.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tema.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tema_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/trange.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/trange_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/trima.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/trima_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/trix.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/trix_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ultosc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ultosc_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/util.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/var.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/var_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/willr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/willr_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wma.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wma_test.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,26 +250,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "DefaultGoTemplateProperty": "Go File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/Users/leven/u8/indicator",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/leven/u8/indicator&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/types" />
       <recent name="$PROJECT_DIR$/change" />
       <recent name="$PROJECT_DIR$/example" />
       <recent name="$PROJECT_DIR$/go-tart" />
@@ -70,25 +278,6 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/floats" />
     </key>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="indicator" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="indicator" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <method v="2" />
-    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">

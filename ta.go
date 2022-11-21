@@ -1,9 +1,36 @@
 package tart
 
-import "github.com/uvite/indicator/floats"
+import (
+	"fmt"
+	"github.com/uvite/indicator/floats"
+	"github.com/uvite/indicator/indicator"
+	. "github.com/uvite/indicator/tart"
+	"github.com/uvite/indicator/types"
+)
 
 type Talib struct {
 }
+
+func (ta Talib) Alma(in floats.Slice, n int64, offset float64, sigma int) floats.Slice {
+
+	//out := make(floats.Slice, len(in))
+
+	alma := indicator.ALMA{
+		IntervalWindow: types.IntervalWindow{Window: int(n)},
+		Offset:         offset,
+		Sigma:          sigma,
+	}
+	//alma.CalculateAndUpdate(tt.kLines)
+	//s := NewSma(n)
+	fmt.Println(alma.Length(), "alma.length")
+	for _, v := range in {
+		alma.Update(v)
+	}
+
+	return alma.Values
+}
+
+// 以上为bbgo indicator 实现
 
 func (ta Talib) Sma(in floats.Slice, n int64) floats.Slice {
 
