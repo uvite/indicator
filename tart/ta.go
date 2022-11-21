@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/uvite/indicator/floats"
 	"github.com/uvite/indicator/indicator"
-	. "github.com/uvite/indicator/tart"
 	"github.com/uvite/indicator/types"
 )
 
